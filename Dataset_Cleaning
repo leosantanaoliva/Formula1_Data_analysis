@@ -1,0 +1,81 @@
+-- Remove duplicate rows
+DELETE FROM formula1_drivers
+WHERE ctid NOT IN (
+    SELECT min(ctid)
+    FROM formula1_drivers
+    GROUP BY driver, nationality, seasons, championships, race_entries, race_starts, pole_positions,
+             race_wins, podiums, fastest_laps, points, active, championship_years, decade, pole_rate,
+             start_rate, win_rate, podium_rate, fastlap_rate, points_per_entry, years_active, champion
+);
+
+-- Handle missing values
+UPDATE formula1_drivers
+SET championships = 0
+WHERE championships IS NULL;
+
+UPDATE formula1_drivers
+SET race_entries = 0
+WHERE race_entries IS NULL;
+
+UPDATE formula1_drivers
+SET race_starts = 0
+WHERE race_starts IS NULL;
+
+UPDATE formula1_drivers
+SET pole_positions = 0
+WHERE pole_positions IS NULL;
+
+UPDATE formula1_drivers
+SET race_wins = 0
+WHERE race_wins IS NULL;
+
+UPDATE formula1_drivers
+SET podiums = 0
+WHERE podiums IS NULL;
+
+UPDATE formula1_drivers
+SET fastest_laps = 0
+WHERE fastest_laps IS NULL;
+
+UPDATE formula1_drivers
+SET points = 0
+WHERE points IS NULL;
+
+UPDATE formula1_drivers
+SET active = FALSE
+WHERE active IS NULL;
+
+UPDATE formula1_drivers
+SET champion = FALSE
+WHERE champion IS NULL;
+
+-- Standardize string formats
+UPDATE formula1_drivers
+SET nationality = INITCAP(nationality);
+
+-- Remove unwanted characters from seasons
+UPDATE formula1_drivers
+SET seasons = REPLACE(REPLACE(seasons, '[', ''), ']', '');
+
+-- Convert seasons column to an array
+ALTER TABLE formula1_drivers
+ADD COLUMN seasons_array INTEGER[];
+
+UPDATE formula1_drivers
+SET seasons_array = string_to_array(REPLACE(REPLACE(seasons, '[', ''), ']', ''), ',')::INTEGER[];
+
+ALTER TABLE formula1_drivers
+DROP COLUMN seasons;
+
+ALTER TABLE formula1_drivers
+RENAME COLUMN seasons_array TO seasons;
+
+-- formating the number of seasons column 
+ALTER TABLE formula1_drivers
+ADD COLUMN years_of_seasons INT;
+
+UPDATE formula1_drivers
+SET years_of_seasons = CASE
+    WHEN seasons IS NULL OR seasons = '{}' THEN 0
+    ELSE array_length(string_to_array(regexp_replace(seasons::text, '^{|}$', ''), ','), 1)
+END;
