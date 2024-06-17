@@ -1,4 +1,4 @@
-# Formula1_Data_analysis
+# Formula1 Data analysis
 
 Project Overview
 This project showcases a complete data pipeline, starting from the extraction of a Formula 1 dataset from an API using Python, transferring it to a SQL Server, and then performing extensive data cleaning and transformation. The ultimate goal is to prepare the dataset for detailed analysis and visualization.
