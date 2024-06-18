@@ -1,0 +1,65 @@
+# Creating new column 
+
+-- formating the number of seasons column 
+ALTER TABLE formula1_drivers
+ADD COLUMN years_of_seasons INT;
+
+UPDATE formula1_drivers
+SET years_of_seasons = CASE
+    WHEN seasons IS NULL OR seasons = '{}' THEN 0
+    ELSE array_length(string_to_array(regexp_replace(seasons::text, '^{|}$', ''), ','), 1)
+END;
+
+# Creating new table that greatest chapions of all time 
+
+-- Drop the table if it exists
+DROP TABLE IF EXISTS champion_drivers;
+
+-- Create the table champion_drivers
+CREATE TABLE champion_drivers AS
+SELECT 
+    driver,
+    years_of_seasons,
+    SUM(race_wins) AS total_race_wins,
+    SUM(pole_positions) AS total_pole_positions,
+    SUM(points) AS total_points,
+    SUM(podiums) AS total_podiums
+FROM 
+    formula1_drivers
+WHERE 
+    champion = 'true'
+GROUP BY 
+    driver, years_of_seasons
+ORDER BY 
+    years_of_seasons ASC; 
+
+# creating new table for decade 
+
+-- Drop the table if it exists
+DROP TABLE IF EXISTS decade_drivers;
+
+-- Create the table champion_drivers
+CREATE TABLE decade_drivers AS
+
+SELECT
+    decade,
+    AVG(pole_rate) AS avg_pole_rate,
+    AVG(start_rate) AS avg_start_rate,
+    AVG(win_rate) AS avg_win_rate,
+    AVG(podium_rate) AS avg_podium_rate,
+    AVG(race_wins) AS avg_race_wins,
+    AVG(race_entries) AS avg_race_entries,
+    AVG(points) AS avg_points,
+    AVG(points_per_entry) AS avg_points_per_entry
+FROM
+    formula1_drivers
+WHERE
+    champion = TRUE
+GROUP BY
+    decade
+ORDER BY
+    decade DESC;
+
+
+
+
