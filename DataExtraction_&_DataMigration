@@ -1,3 +1,5 @@
+# Data Extraction Rest API
+
 import os
 import subprocess
 
@@ -14,6 +16,7 @@ subprocess.run(["unzip", "formula-1-drivers-dataset.zip", "-d", "formula-1-drive
 print("Dataset downloaded and unzipped successfully")
 
 
+# Data Migration to PostgreSQL Server
 
 import psycopg2
 import pandas as pd
