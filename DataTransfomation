@@ -10,8 +10,6 @@ SET years_of_seasons = CASE
     ELSE array_length(string_to_array(regexp_replace(seasons::text, '^{|}$', ''), ','), 1)
 END;
 
-# Creating new table that greatest chapions of all time 
-
 -- Drop the table if it exists
 DROP TABLE IF EXISTS champion_drivers;
 
@@ -20,6 +18,7 @@ CREATE TABLE champion_drivers AS
 SELECT 
     driver,
     years_of_seasons,
+	championships,
     SUM(race_wins) AS total_race_wins,
     SUM(pole_positions) AS total_pole_positions,
     SUM(points) AS total_points,
@@ -29,9 +28,10 @@ FROM
 WHERE 
     champion = 'true'
 GROUP BY 
-    driver, years_of_seasons
+    driver, years_of_seasons, championships
 ORDER BY 
-    years_of_seasons ASC; 
+    championships DESC; 
+
 
 # creating new table for decade 
 
