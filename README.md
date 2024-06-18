@@ -1,20 +1,9 @@
 # Formula1 Data analysis
 
 Project Overview
-This project showcases a complete data pipeline, starting from the extraction of a Formula 1 dataset from an API using Python, transferring it to a SQL Server, and then performing extensive data cleaning and transformation. The ultimate goal is to prepare the dataset for detailed analysis and visualization.
+This project showcases a complete data pipeline, end-to-end, starting from the extraction of a Formula 1 dataset from an API using Python in a Jupyter Notebook, transferring it to a PostgreSQL database, and then performing extensive data cleaning and transformation using SQL. The result is new tables prepared to conduct detailed analysis on drivers' performance.
 
-Table of Contents:
 
-- Introduction
-- Project Structure
-- Installation
-- Data Extraction
-- Data Transfer
-- Data Cleaning and Transformation
-- Data Analysis
-- Conclusion
-
-## Introduction
 ## Dataset Structure
 
 1. Driver: Name of the Formula 1 driver.
@@ -43,16 +32,9 @@ Table of Contents:
 
 ## Guiding Questions
 
-1. what is the distribution of driver nationalities in this dataset?
-2. what does it take to be a champion in each decade?
-3. Who is the the greatest driver of all times?
+1. what does it take to be a champion in each decade?
+2. Who is the the greatest driver of all times?
 
-
-
-## Data Extraction & Migration
-
-## Data Cleaning and Transformation
-## Data Analysis
 ## Conclusion
 
 ## References
